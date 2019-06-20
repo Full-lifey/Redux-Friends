@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner';
+
+import { logIn } from '../actions';
 
 class LoginForm extends Component {
-  constructor() {
-    super();
-    state = {
+  state = {
+    credentials: {
       username: '',
       password: ''
-    };
-  }
-  login = e => {};
+    }
+  };
+  login = e => {
+    e.preventDefault();
+    this.props.logIn(this.state.credentials).then(res => {
+      res && this.props.history.push('/protected');
+    });
+  };
   changeHandler = e => {
     e.preventDefault();
     this.setState({
-      [e.target.name]: e.target.value
+      credentials: {
+        ...this.state.credentials,
+        [e.target.name]: e.target.value
+      }
     });
   };
   render() {
+    console.log(this.props);
     return (
       <form onSubmit={this.login}>
         <input
@@ -27,19 +38,33 @@ class LoginForm extends Component {
           onChange={this.changeHandler}
         />
         <input
-          type='text'
+          type='password'
           value={this.state.password}
           name='password'
           placeholder='Password'
           onChange={this.changeHandler}
         />
-        <button>Submit</button>
+        <button>
+          {this.props.loggingIn ? (
+            <Loader type='ThreeDots' color='#1f2a38' height='12' width='26' />
+          ) : (
+            'Log in'
+          )}
+        </button>
       </form>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state);
-  return {};
+  return {
+    friends: state.friends,
+    loggingIn: state.loggingIn,
+    error: state.error
+  };
 };
+
+export default connect(
+  mapStateToProps,
+  { logIn }
+)(LoginForm);

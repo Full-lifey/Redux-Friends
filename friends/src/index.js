@@ -8,13 +8,14 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { rootReducer } from './reducers';
+import { reducer } from './reducers';
+import { setToken } from './token';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk, logger))
+  reducer,
+  composeEnhancers(applyMiddleware(thunk, setToken, logger))
 );
 
 ReactDOM.render(
