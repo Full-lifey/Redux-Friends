@@ -1,14 +1,15 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import { Route, Link } from 'react-router-dom';
 
 import LoginForm from './components/Login';
 import PrivateRoute from './components/PrivateRoute';
+import Friends from './components/Friends';
 
 function App() {
   return (
     <div className='App'>
-      <ul>
+      <ul className='navbar'>
         <li>
           <Link to='/login'>Login</Link>
         </li>
@@ -17,7 +18,7 @@ function App() {
         </li>
       </ul>
       <Route path='/login' component={LoginForm} />
-      <PrivateRoute exact path='/protected' component={GasPrices} />
+      <PrivateRoute exact path='/friends' component={Friends} />
     </div>
   );
 }
